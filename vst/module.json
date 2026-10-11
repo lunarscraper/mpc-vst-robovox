@@ -1,0 +1,32 @@
+{
+  "_comment": "Not a real Schwung module -- chain_params lists the VST parameters of robovox_vst.cpp so mpc-vst-plugins' tools/gen_vst.py can generate params.h + the skin. The keys must match robovox_vst.cpp. Never reorder (saved projects store values by index); append new ones at the end.",
+  "chain_params": [
+    { "key": "preset", "name": "Preset", "min": 1, "max": 32, "default": 1 },
+    { "key": "preset_load", "name": "Load", "access": "write" },
+    { "key": "preset_save", "name": "Save", "access": "write" },
+    { "key": "carrier", "name": "Carrier", "options": ["SAW", "SQUARE", "PULSE", "SUPER", "BUZZ", "NOISE"], "default": 0 },
+    { "key": "pitch_mode", "name": "Pitch", "options": ["FIXED", "LATCH", "MIDI", "FOLLOW"], "default": 0 },
+    { "key": "root", "name": "Root", "min": 24, "max": 72, "default": 45 },
+    { "key": "chord", "name": "Chord", "options": ["MONO", "OCTAVE", "FIFTH", "MINOR", "MAJOR", "SUS4", "MIN7"], "default": 0 },
+    { "key": "scale", "name": "Scale", "options": ["FREE", "CHROMATIC", "MAJOR", "MINOR", "PHRYGIAN", "PENTA"], "default": 3 },
+    { "key": "octave", "name": "Octave", "min": -2, "max": 2, "default": 0 },
+    { "key": "glide", "name": "Glide", "min": 0, "max": 100, "default": 0 },
+    { "key": "spread", "name": "Spread", "min": 0, "max": 100, "default": 25 },
+    { "key": "bands", "name": "Bands", "options": ["8", "12", "16", "20", "24"], "default": 2 },
+    { "key": "shift", "name": "Shift", "min": -12, "max": 12, "default": 0 },
+    { "key": "q", "name": "Q", "min": 0, "max": 100, "default": 40 },
+    { "key": "release", "name": "Release", "min": 0, "max": 100, "default": 30 },
+    { "key": "sibilance", "name": "Sibilance", "min": 0, "max": 100, "default": 35 },
+    { "key": "unvoiced", "name": "Unvoiced", "min": 0, "max": 100, "default": 40 },
+    { "key": "freeze", "name": "Freeze", "options": ["OFF", "ON"], "default": 0 },
+    { "key": "crush", "name": "Crush", "min": 0, "max": 100, "default": 0 },
+    { "key": "ring", "name": "Ring", "min": 0, "max": 100, "default": 0 },
+    { "key": "width", "name": "Width", "min": 0, "max": 100, "default": 40 },
+    { "key": "tgate", "name": "Gate Sync", "options": ["OFF", "1/4", "1/8", "1/16", "1/32"], "default": 0 },
+    { "key": "input", "name": "Input", "options": ["L+R", "LEFT", "RIGHT"], "default": 0 },
+    { "key": "in_gain", "name": "In Gain", "min": -12, "max": 24, "default": 6 },
+    { "key": "gate", "name": "Noise Gate", "min": 0, "max": 100, "default": 25 },
+    { "key": "mix", "name": "Mix", "min": 0, "max": 100, "default": 100 },
+    { "key": "output", "name": "Output", "min": -12, "max": 12, "default": 0 }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Robovox",
+  "vendor": "lunarscraper",
+  "uid": "RbVx",
+  "version": 1000,
+  "so": "robovox.so",
+  "module": "module.json",
+  "layout": "layout.conf",
+  "effect": true,
+  "title_font": "fonts/TitilliumWeb-SemiBold.ttf",
+  "_comment": "Insert effect (vocoder for the Force's mic input). vst.json/module.json only feed mpc-vst-plugins' tools/gen_vst.py for params.h + the skin. The plugin is robovox_vst.cpp, built by this port's own build.sh (one source file, hand-written VST2 shell, no JUCE, no GUI; ALSA is opened at run time with dlopen for the MIDI-in port)."
+}
