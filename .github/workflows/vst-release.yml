@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Version, e.g. 1.0.0
+        description: Version, e.g. 1.1.0
         required: true
-        default: 1.0.0
+        default: 1.1.0
       dry_run:
         description: Build only (zip + skin previews as run artifacts), no draft release
         type: boolean
@@ -14,13 +14,13 @@ on:
 
 jobs:
   robovox:
-    uses: sd88me/mpc-vst-plugins/.github/workflows/vst-release.yml@259f75d0ce0f836cfd89cc0a33c550b55917cffc
+    uses: open-mpc/mpc-vst-plugins/.github/workflows/vst-release.yml@1af05b911e8580c8c2e473a1cc10119132e06eca
     permissions:
       contents: write
     with:
       tag: robovox-vst-v${{ inputs.version }}
       version: ${{ inputs.version }}
-      tools_ref: 259f75d0ce0f836cfd89cc0a33c550b55917cffc
+      tools_ref: 1af05b911e8580c8c2e473a1cc10119132e06eca
       vst_dir: vst
       build: bash vst/build.sh
       host_test: bash vst/test.sh
