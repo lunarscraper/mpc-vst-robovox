@@ -2,11 +2,12 @@
   "name": "Robovox",
   "vendor": "lunarscraper",
   "uid": "RbVx",
-  "version": 1000,
+  "version": 1100,
   "so": "robovox.so",
   "module": "module.json",
   "layout": "layout.conf",
   "effect": true,
   "title_font": "fonts/TitilliumWeb-SemiBold.ttf",
-  "_comment": "Insert effect (vocoder for the Force's mic input). vst.json/module.json only feed mpc-vst-plugins' tools/gen_vst.py for params.h + the skin. The plugin is robovox_vst.cpp, built by this port's own build.sh (one source file, hand-written VST2 shell, no JUCE, no GUI; ALSA is opened at run time with dlopen for the MIDI-in port)."
+  "_comment": "Insert effect (vocoder for the Force's mic input). vst.json/module.json only feed mpc-vst-plugins' tools/gen_vst.py for params.h + the skin. The plugin is robovox_vst.cpp, built by this port's own build.sh (one source file, hand-written VST2 shell, no JUCE, no GUI; ALSA is opened at run time with dlopen for the MIDI-in port). 1.1.0: Force-Look skin (force_look.py as skin_post, as Rattler 1.1 / Wumms 0.3); LOAD/SAVE fire on every change of state (MPC OS 3.10 buttons).",
+  "skin_post": "force_look.py"
 }

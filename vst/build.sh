@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Build Robovox as a VST2 insert effect for the MPC OS plugin host (armhf).
-#   vst/build/robovox.so            -> /sdcard/vst/ on the device
+#   vst/build/robovox.so            -> /sdcard/VST2 Plugins/lunarscraper - VST - Robovox/ on the device
 #   vst/build/pluginlist-entry.xml  the <PLUGIN> line for MPC.settings' pluginList-arm
-#   vst/build/skin/                 -> /sdcard/Synths/ on the device
+#   vst/build/skin/                 -> its "Plugin Skins" folder goes next to robovox.so
 # One source file (robovox_vst.cpp), hand-written VST2 shell, no JUCE, no GUI. libasound is NOT
 # linked: the MIDI-in port opens it with dlopen at run time (it ships with MPC OS).
 # vst.json/module.json only feed tools/gen_vst.py for params.h + the skin. Offline test + bench: test.sh.

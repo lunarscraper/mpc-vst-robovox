@@ -15,13 +15,31 @@ the mic is processed in the audio thread directly.
 | VOCODER | BANDS 8/12/16/20/24 (fewer = more robotic, more = clearer words). SHIFT ±12 semitones moves the carrier bands: down = giant mech, up = tiny bot. Q from wide to ringing. RELEASE 8–400 ms. SIBILANCE: the mic's highs (s, t, sh) straight through. UNVOICED: noise into the carrier while the mic is hissy, so consonants stay intelligible. FREEZE holds the current spectrum: sing a vowel, freeze, and it sustains as a pad without the mic. |
 | ROBOT | CRUSH (sample rate + bit reduction), RING (ring modulator 20 Hz–1.8 kHz, 0 = off; ~30 Hz = the classic sci-fi robot), WIDTH (bands alternately left/right), GATE SYNC (trance gate on the host tempo: 1/4, 1/8, 1/16, 1/32; open while the transport is stopped). |
 | IN/OUT | INPUT (L+R, LEFT, RIGHT – pick the side your mic is on if only one is), IN GAIN −12…+24 dB, NOISE GATE (−80…−20 dB, 0 = off – stops room noise and monitor bleed from opening the vocoder), MIX (0 = dry), OUTPUT ±12 dB with a soft knee above −3 dBFS. |
-| PRESETS | 32 slots: PRESET knob + LOAD / SAVE. Slots 1–14 are factory sounds, 15–32 INIT. The slots are also the plugin's programs, so they show in the MPC preset list. SAVE writes `robovox_user/slot_NN.txt` next to the plugin (`/sdcard/vst/robovox_user/`). |
+| PRESETS | 32 slots: PRESET knob + LOAD / SAVE. Slots 1–14 are factory sounds, 15–32 INIT. The slots are also the plugin's programs, so they show in the MPC preset list. SAVE writes `robovox_user/slot_NN.txt` next to the plugin (`/sdcard/VST2 Plugins/lunarscraper - VST - Robovox/robovox_user/`). |
 
 Factory slots: 1 CLASSIC ROBOT, 2 AUTOTUNE BOT, 3 CYLON, 4 RING DROID, 5 MACHINE CHOIR, 6 VOCODER 78,
 7 WHISPER UNIT, 8 GIANT MECH, 9 NANO BOT, 10 FREEZE PAD, 11 BITCRUSH UNIT, 12 GOA ORACLE (FOLLOW in
 Phrygian with a fifth), 13 TRANCE GATE (LATCH, minor chord, 1/16 gate), 14 MIDI KEYS.
 
 Q-Links carry only knobs and selectors (no buttons or switches).
+
+## Force-Look (1.1.0)
+
+The skin uses the Force-Look of Rattler 1.1, Fader FX 1.2, V-Filter 0.7 and Wumms 0.3: large type, big touch
+targets, a page of its own in acid green on dark gunmetal (gradient, glow, light rays, dark panels), arc knobs
+(bipolar for OCTAVE, SHIFT, OUTPUT), big option segments (PITCH, BANDS, FREEZE, GATE SYNC, INPUT) and big
+LOAD / SAVE buttons. `vst/force_look.py` runs as vst.json `"skin_post"` and repaints the generator's images;
+the `#@title`, `#@frame` and `#@text` lines in `layout.conf` place the titles, frames and captions.
+Needs the open-mpc/mpc-vst-plugins tools at 1af05b9 or later (the workflow pins it).
+
+**LOAD / SAVE on MPC OS 3.10:** the host treats a button like a switch (a tap sends 1, the next tap 0, and the
+plugin's reset to 0 may be ignored). Since 1.1.0 LOAD and SAVE fire on every change of state, except the release
+that follows within 0.6 s of a fire, so every tap acts once (`vst/host_test.cpp`, test 10b).
+
+## Install on the Force
+
+Copy `robovox.so` and the `Plugin Skins` folder from the release ZIP's `payload` to
+`/sdcard/VST2 Plugins/lunarscraper - VST - Robovox/`, then restart the Force (a changed skin is only read at start).
 
 ## Setup on the Force
 
@@ -43,7 +61,7 @@ CC from a controller is not mapped (yet): the Q-Links and the MPC's own MIDI lea
 that on the Force's Cortex-A17; the real load goes to `/tmp/robovox_vst.log` every ~5 s
 (`ssh root@<device> cat /tmp/robovox_vst.log`).
 
-Build/deploy workflow: see `sd88me/mpc-vst-plugins`' `docs/PORTING.md`; GitHub Actions: *VST release
+Build/deploy workflow: see `open-mpc/mpc-vst-plugins`' `docs/PORTING.md`; GitHub Actions: *VST release
 (draft)* (`.github/workflows/vst-release.yml`).
 License: GPL-3.0-or-later (the VST shell follows mpc-vst-fsvr).
 

@@ -280,6 +280,8 @@ struct Plugin {
     std::atomic<int> notify[NPARAMS];
     float open[NPARAMS] = {0};
     volatile int release[NPARAMS] = {0};
+    bool mdown[NPARAMS] = {false};        /* LOAD/SAVE: last state the host sent */
+    double mtrig[NPARAMS];                /* LOAD/SAVE: when it last fired (steady clock, s) */
     std::atomic<bool> update_display{false};
     float sr = 44100.0f;
     std::vector<uint8_t> chunk;
@@ -790,7 +792,15 @@ static void setParameter(AEffect *e, int32_t i, float n) {
     const param_t *p = &PARAMS[i];
     if (popup_set(w->open, i, n)) return;
     if (p->momentary) {
-        if (n <= 0.5f) return;
+        /* MPC OS 3.10 treats a button like a switch: a tap sends 1 and the next tap 0, and our automate
+         * back to 0 may be ignored. So fire on every change of state, except the falling edge that comes
+         * within 0.6 s of a fire (the release of that same tap, or the echo of our own reset). */
+        const bool down = n > 0.5f;
+        const double t = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
+        if (down == w->mdown[i]) return;
+        w->mdown[i] = down;
+        if (!down && t - w->mtrig[i] < 0.6) return;
+        w->mtrig[i] = t;
         if (!std::strcmp(p->key, "preset_load")) load_slot(w, ui(w, IDX_PRESET) - 1);
         else if (!std::strcmp(p->key, "preset_save")) save_slot(w, ui(w, IDX_PRESET) - 1);
         w->notify[i].store(2);
@@ -955,7 +965,7 @@ extern "C" __attribute__((visibility("default"))) AEffect *VSTPluginMain(audioMa
     w->master = master;
     w->noise ^= (uint32_t)std::time(nullptr) ^ (uint32_t)(uintptr_t)w;
     if (!w->noise) w->noise = 1;
-    for (int i = 0; i < NPARAMS; i++) { w->cache[i].store(PARAMS[i].def); w->notify[i].store(0); }
+    for (int i = 0; i < NPARAMS; i++) { w->cache[i].store(PARAMS[i].def); w->notify[i].store(0); w->mtrig[i] = -1e9; }
     scan_slots(w);
     load_slot(w, 0);
     for (int i = 0; i < NPARAMS; i++) w->notify[i].store(0);

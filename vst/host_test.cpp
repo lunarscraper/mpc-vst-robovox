@@ -10,6 +10,8 @@
 #include <cmath>
 #include <cstdint>
 #include <cstdio>
+#include <thread>
+#include <chrono>
 #include <cstdlib>
 #include <cstring>
 #include <string>
@@ -368,6 +370,25 @@ int main(int argc, char **argv) {
         char pn[64] = {0};
         e->dispatcher(e, 29, 19, 0, pn, 0);
         CHECK(!std::strcmp(pn, "USER 20"), "saved slot name '%s'", pn);
+        /* 10b. Force-style buttons (MPC OS 3.10): a tap sends 1, the next tap 0, no reset in between.
+         * Both taps must load; the release of a tap (within 0.6 s) must not load a second time. */
+        setv(e, "Root", 30, 24, 72);
+        e->setParameter(e, pidx(e, "Load"), 1.0f);
+        CHECK(disp(e, "Root") == "C4", "first LOAD tap '%s'", disp(e, "Root").c_str());
+        setv(e, "Root", 30, 24, 72);
+        e->setParameter(e, pidx(e, "Load"), 0.0f);   /* its own release, right away */
+        CHECK(disp(e, "Root") != "C4", "release of the tap loaded again");
+        e->setParameter(e, pidx(e, "Load"), 1.0f);
+        std::this_thread::sleep_for(std::chrono::milliseconds(700));
+        e->setParameter(e, pidx(e, "Load"), 0.0f);   /* hold: no reset from the host ... */
+        setv(e, "Root", 30, 24, 72);
+        std::this_thread::sleep_for(std::chrono::milliseconds(700));
+        e->setParameter(e, pidx(e, "Load"), 1.0f);   /* ... the next tap still loads */
+        CHECK(disp(e, "Root") == "C4", "second LOAD tap '%s'", disp(e, "Root").c_str());
+        setv(e, "Root", 30, 24, 72);
+        std::this_thread::sleep_for(std::chrono::milliseconds(700));
+        e->setParameter(e, pidx(e, "Load"), 0.0f);   /* toggle host: the next tap arrives as 0 */
+        CHECK(disp(e, "Root") == "C4", "LOAD tap arriving as 0 '%s'", disp(e, "Root").c_str());
         Dl_info di;
         dladdr((void *)mainf, &di);
         std::string dir = di.dli_fname; dir = dir.substr(0, dir.rfind('/')) + "/robovox_user";
